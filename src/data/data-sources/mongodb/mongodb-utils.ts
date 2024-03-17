@@ -10,20 +10,7 @@ export async function connectToMongoDB() {
 
     const bookDatabase: NoSQLDatabaseWrapper = {
         find: (query) => db.collection("books").find(query).toArray(),
-        async insertOne(doc) {
-            const created = await db.collection("books").insertOne(doc);
-            const response = {
-                id: created.insertedId,
-                title: doc.title,
-                author: doc.author,
-                price: doc.price,
-                isbn: doc.isbn,
-                language: doc.language,
-                numberOfPages: doc.numberOfPages,
-                publisher: doc.publisher
-            };
-            return response;
-        },
+        insertOne: (doc) => db.collection("books").insertOne(doc),
         deleteOne: (id: string) => db.collection("books").deleteOne({ _id: new ObjectId(id) }),
         updateOne: (id: string, data: object) => db.collection("books").updateOne({ _id: new ObjectId(id) }, { $set: data })
     }
