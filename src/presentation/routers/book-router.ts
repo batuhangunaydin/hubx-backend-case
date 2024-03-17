@@ -4,7 +4,7 @@ import { CreateBookUseCase } from '../../domain/interfaces/use-cases/create-book
 import { GetAllBooksUseCase } from '../../domain/interfaces/use-cases/get-all-books-use-case'
 import { UpdateBookUseCase } from '../../domain/interfaces/use-cases/update-book-use-case'
 import { DeleteBookUseCase } from '../../domain/interfaces/use-cases/delete-book-use-case'
-
+import { ValidateBookRequest }  from '../utils/book-utils';
 
 export default function BooksRouter(
     getAllBooksUseCase: GetAllBooksUseCase,
@@ -16,10 +16,15 @@ export default function BooksRouter(
 
     router.post('/', async (req: Request, res: Response) => {
         try {
+            const isValidated = await ValidateBookRequest(req.body);
+            if (!isValidated) {
+                res.status(400).send({ message: "Invalid parameters"});
+                return;
+            }
+
             await createBookUseCase.execute(req.body);
             res.status(201).send({ message: "Created"});
         } catch (err) {
-            console.log(err.message);
             res.status(500).send({ message: "Error saving data" });
         }
     });
@@ -35,21 +40,34 @@ export default function BooksRouter(
 
     router.put('/:id', async (req: Request, res: Response) => {
         try {
-            console.log("params: ", req.params.id);
+            if (typeof req.params.id !== 'string' || !req.params.id) {
+                res.status(400).send({ message: "Invalid book ID" });
+                return;
+            }
+
+            const isValidated = await ValidateBookRequest(req.body);
+            if (!isValidated) {
+                res.status(400).send({ message: "Invalid parameters"});
+                return;
+            }
+
             await updateBookUseCase.execute(req.params.id, req.body);
             res.status(200).send({ message: "Updated" });
         } catch (err) {
-            console.log(err.message);
             res.status(500).send({ message: "Error updating data" });
         }
     });
 
     router.delete('/:id', async (req: Request, res: Response) => {
         try {
+            if (typeof req.params.id !== 'string' || !req.params.id) {
+                res.status(400).send({ message: "Invalid book ID" });
+                return;
+            }
+
             await deleteBookUseCase.execute(req.params.id);
             res.status(200).send({ message: "Deleted" });
         } catch (err) {
-            console.log(err.message);
             res.status(500).send({ message: "Error deleting data" });
         }
     });

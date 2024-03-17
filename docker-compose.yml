@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+# MongoDB Services
+  mongo_db:
+    container_name: db_container
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: hubx
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_db:/data/db
+
+  # Node API Service
+  
+  api:
+    build: .
+    ports:
+      - 4000:4000
+    volumes:
+      - .:/usr/src/app
+    environment:
+      PORT: 4000
+      MONGO_URL: mongodb://mongo_db:27017/hubx
+      MONGO_DB_NAME: hubx
+    depends_on:
+      - mongo_db
+    
+volumes:
+  mongo_db: {}

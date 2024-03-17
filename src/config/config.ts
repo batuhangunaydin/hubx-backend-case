@@ -8,7 +8,7 @@ const MONGO_DB_USER = process.env.MONGO_DB_USER || '';
 const MONGO_DB_PASSWORD = process.env.MONGO_DB_PASSWORD || '';
 const MONGO_DB_NAME = process.env.MONGO_DB_NAME || '';
 const MONGO_URL = `mongodb+srv://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@cluster0.xgqwh.mongodb.net/hubx`;
-const SERVER_PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
+const SERVER_PORT = process.env.PORT ? Number(process.env.PORT) : 4000;
 const MONGO_URL_LOCAL = process.env.MONGO_URL || '';
 
 //Create config object

@@ -6,6 +6,7 @@ import { CreateBook } from './domain/use-cases/book/create-book'
 import { UpdateBook } from './domain/use-cases/book/update-books'
 import { DeleteBook } from './domain/use-cases/book/delete-book'
 import { connectToMongoDB } from './data/data-sources/mongodb/mongodb-utils'
+import config from './config/config'
 
 (async () => {
     const dataSource = await connectToMongoDB();
@@ -18,6 +19,6 @@ import { connectToMongoDB } from './data/data-sources/mongodb/mongodb-utils'
     )
 
     server.use("/books", bookMiddleWare)
-    server.listen(4000, () => console.log("Running on http://localhost:4000"))
+    server.listen(config.server.port, () => console.log(`Running on http://localhost:${config.server.port}`))
 
 })()

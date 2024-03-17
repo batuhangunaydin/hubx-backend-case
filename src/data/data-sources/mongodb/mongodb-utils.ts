@@ -4,7 +4,6 @@ import { MongoDBBookDataSource } from './mongodb-book-data-source';
 import config from '../../../config/config';
 
 export async function connectToMongoDB() {
-    console.log(config.mongo.url);
     const client: MongoClient = new MongoClient(config.mongo.url);
     await client.connect();
     const db = client.db(config.mongo.dbName);
